@@ -3,39 +3,15 @@ window = gr. GraphWin("interest", 500, 500)
 window.setBackground("#B3FFE5")
 
 
-def draw_cloud1():
-    cloud1 = gr. Circle(gr. Point(280, 80), 20)
-    cloud1.setFill("#E6FFFF")
-    cloud1.setOutline("#E6FFFF")
-    cloud1.draw(window)
-
-
-def draw_cloud2():
-    cloud2 = gr. Circle(gr. Point(308, 87), 20)
-    cloud2.setFill("#E6FFFF")
-    cloud2.setOutline("#E6FFFF")
-    cloud2.draw(window)
-
-
-def draw_cloud3():
-    cloud3 = gr. Circle(gr. Point(315, 110), 20)
-    cloud3.setFill("#E6FFFF")
-    cloud3.setOutline("#E6FFFF")
-    cloud3.draw(window)
-
-
-def draw_cloud4():
-    cloud4 = gr. Circle(gr. Point(340, 109), 20)
-    cloud4.setFill("#E6FFFF")
-    cloud4.setOutline("#E6FFFF")
-    cloud4.draw(window)
-
-
-def draw_cloud5():
-    cloud5 = gr. Circle(gr. Point(360, 100), 20)
-    cloud5.setFill("#E6FFFF")
-    cloud5.setOutline("#E6FFFF")
-    cloud5.draw(window)
+def draw_cloud(x, y):
+    cloud_color = "#E6FFFF"
+    circle_centers = [(x-20, y-20), (x+8, y-13), (x+15, y+10),
+                      (x+40, y+9), (x+60, y)]
+    for x, y in circle_centers:
+        circle = gr.Circle(gr.Point(x, y), 20)
+        circle.setFill(cloud_color)
+        circle.setOutline(cloud_color)
+        circle.draw(window)
 
 
 def draw_sun():
@@ -66,11 +42,8 @@ def draw_grass():
     grass.draw(window)
 
 
-draw_cloud1()
-draw_cloud2()
-draw_cloud3()
-draw_cloud4()
-draw_cloud5()
+for x, y in [(240,100), (300,180), (380,100)]:
+    draw_cloud(x,y)
 draw_hill()
 draw_grass()
 draw_sun()
