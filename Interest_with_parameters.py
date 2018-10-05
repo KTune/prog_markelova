@@ -38,41 +38,6 @@ def draw_cloud5():
     cloud5.draw(window)
 
 
-
-def draw_cloud6():
-        cloud1 = gr.Circle(gr.Point(380, 140), 20)
-        cloud1.setFill("#E6FFFF")
-        cloud1.setOutline("#E6FFFF")
-        cloud1.draw(window)
-
-
-def draw_cloud7():
-        cloud2 = gr.Circle(gr.Point(408, 147), 20)
-        cloud2.setFill("#E6FFFF")
-        cloud2.setOutline("#E6FFFF")
-        cloud2.draw(window)
-
-
-def draw_cloud8():
-        cloud3 = gr.Circle(gr.Point(415, 170), 20)
-        cloud3.setFill("#E6FFFF")
-        cloud3.setOutline("#E6FFFF")
-        cloud3.draw(window)
-
-
-def draw_cloud9():
-        cloud4 = gr.Circle(gr.Point(440, 169), 20)
-        cloud4.setFill("#E6FFFF")
-        cloud4.setOutline("#E6FFFF")
-        cloud4.draw(window)
-
-def draw_cloud10():
-        cloud5 = gr.Circle(gr.Point(460, 160), 20)
-        cloud5.setFill("#E6FFFF")
-        cloud5.setOutline("#E6FFFF")
-        cloud5.draw(window)
-
-
 def draw_sun():
     sun = gr. Circle(gr. Point(120, 100), 60)
     sun.setFill("#FFD500")
@@ -81,7 +46,7 @@ def draw_sun():
 
 
 def draw_txt():
-    txt = gr. Text(gr. Point(250, 450), "Whatcha doing?")
+    txt = gr. Text(gr. Point(250, 250), "Whatcha doing?")
     txt.setSize(20)
     txt.setTextColor("#550066")
     txt.draw(window)
@@ -106,11 +71,6 @@ draw_cloud2()
 draw_cloud3()
 draw_cloud4()
 draw_cloud5()
-draw_cloud6()
-draw_cloud7()
-draw_cloud8()
-draw_cloud9()
-draw_cloud10()
 draw_hill()
 draw_grass()
 draw_sun()
