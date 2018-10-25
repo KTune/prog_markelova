@@ -1,6 +1,7 @@
 from tkinter import *
 import random
 from random import randint
+import time
 
 root = Tk()
 root.geometry('800x600')
@@ -60,17 +61,36 @@ COLORS = ['snow', 'gainsboro', 'floral white', 'old lace', 'linen', 'antique whi
         'MediumPurple2', 'MediumPurple3', 'MediumPurple4', 'thistle1', 'thistle2', 'thistle3', 'thistle4', 'gray33',
         'gray52', 'gray74', 'gray88']
 
-def left_click(event):
-    r = randint(15, 60)
+
+def new_ball():
+    global x, y, r, ball
+    canv.delete(ball)
+    r = randint(15, 100)
     x = randint(15, 745)
     y = randint(15, 545)
-    canv.create_oval(x-r, y-r, x+r, y+r, fill=random.choice(COLORS), outline=random.choice(COLORS))
+    ball = canv.create_oval(x-r, y-r, x+r, y+r, fill=random.choice(COLORS), outline=random.choice(COLORS))
+    root.after(1100, new_ball)
 
 
-def right_click(event):
+def left_click(event):      # for clicking the balls and earning points
+    global points, x, text
+    if (event.y - y) ** 2 + (event.x - x) ** 2 <= r ** 2:
+       points += 1
+       x = -1000
+       canv.delete(text)
+       canv.delete(ball)
+       text = canv.create_text(20, 20, text=str(points), font='Arial 20')
+
+
+def right_click(event):       # makes all balls disappear
     canv.delete(ALL)
 
 
+ball = canv.create_oval(-200, 0, 0, 0)
+text = canv.create_text(20, 20, text=0, font='Arial 20')
+points = 0
+new_ball()
+# timer()
 canv.bind('<Button-1>', left_click)
 canv.bind('<Button-3>', right_click)
 
