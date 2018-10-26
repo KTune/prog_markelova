@@ -1,14 +1,16 @@
 from tkinter import *
 import random
 from random import randint
-import time
+
 
 root = Tk()
 root.geometry('800x600')
 canv = Canvas(root, bg='white')
 canv.pack(fill=BOTH, expand=1)
 
-COLORS = ['snow', 'gainsboro', 'floral white', 'old lace', 'linen', 'antique white', 'papaya whip', 'blanched almond',
+
+COLORS = [
+        'snow', 'gainsboro', 'floral white', 'old lace', 'linen', 'antique white', 'papaya whip', 'blanched almond',
         'bisque', 'peach puff', 'navajo white', 'lemon chiffon', 'mint cream', 'azure', 'alice blue', 'lavender',
         'lavender blush', 'misty rose', 'dark slate gray', 'dim gray', 'slate gray', 'light slate gray', 'gray',
         'light grey', 'midnight blue', 'navy', 'cornflower blue', 'dark slate blue',
@@ -62,14 +64,66 @@ COLORS = ['snow', 'gainsboro', 'floral white', 'old lace', 'linen', 'antique whi
         'gray52', 'gray74', 'gray88']
 
 
-def new_ball():
-    global x, y, r, ball
-    canv.delete(ball)
-    r = randint(15, 100)
-    x = randint(15, 745)
-    y = randint(15, 545)
-    ball = canv.create_oval(x-r, y-r, x+r, y+r, fill=random.choice(COLORS), outline=random.choice(COLORS))
-    root.after(1100, new_ball)
+#def new_ball():
+    #global x, y, r, ball
+    #canv.delete(ball)
+    #r = randint(15, 100)
+    #x = randint(15, 745)
+    #y = randint(15, 545)
+    #ball = canv.create_oval(x-r, y-r, x+r, y+r, fill=random.choice(COLORS), outline=random.choice(COLORS))
+    #root.after(1100, new_ball)
+
+
+x, y = 100, 100
+dx, dy = 2, 3
+r = randint(15, 60)
+ball = canv.create_oval(x-r, y-r, x+r, y+r, fill=random.choice(COLORS), outline=random.choice(COLORS))
+canv.pack(fill=BOTH, expand=1)
+
+
+def tick_handler():
+    global x, y, dx, dy
+    print("Тик!")
+    if x < 0:
+        dx = -dx
+        x = 0
+    elif x > 300-40:
+        dx = -dx
+        x = 300-40
+    if y < 0:
+        dy = -dy
+        y = 0
+    elif y > 300-40:
+        dy = -dy
+        y = 300-40
+    x = x + dx; y = y + dy
+    canv.move(ball, dx, dy)
+
+
+def time_handler():
+    global freeze
+    speed = speed_scale.get()
+    if speed == 0:
+        print("Заморозка!")
+        freeze = True
+        return
+    tick_handler()
+    sleep_dt = 1100 - 100*speed
+    root.after(sleep_dt, time_handler)
+
+
+def unfreezer(event):
+    global freeze
+    if freeze == True:
+        speed = speed_scale.get()
+        if speed != 0:
+            freeze = False
+            root.after(0, time_handler)
+
+
+speed_scale = Scale(
+                root, orient=HORIZONTAL, length=300,
+                from_=0, to=10, tickinterval=1, resolution=1)
 
 
 def left_click(event):      # for clicking the balls and earning points
@@ -78,7 +132,6 @@ def left_click(event):      # for clicking the balls and earning points
        points += 1
        x = -1000
        canv.delete(text)
-       canv.delete(ball)
        text = canv.create_text(20, 20, text=str(points), font='Arial 20')
 
 
@@ -86,10 +139,15 @@ def right_click(event):       # makes all balls disappear
     canv.delete(ALL)
 
 
-ball = canv.create_oval(-200, 0, 0, 0)
 text = canv.create_text(20, 20, text=0, font='Arial 20')
 points = 0
-new_ball()
+speed_scale.pack()
+
+speed_scale.set(1)
+freeze = False
+
+root.after(10, time_handler)
+speed_scale.bind("<Motion>", unfreezer)
 # timer()
 canv.bind('<Button-1>', left_click)
 canv.bind('<Button-3>', right_click)
