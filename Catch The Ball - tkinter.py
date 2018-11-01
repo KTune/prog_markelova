@@ -4,7 +4,7 @@ from random import randint
 
 
 root = Tk()
-root.geometry('800x600')
+root.geometry('500x500')
 canv = Canvas(root, bg='white')
 canv.pack(fill=BOTH, expand=1)
 
@@ -64,26 +64,20 @@ COLORS = [
         'gray52', 'gray74', 'gray88']
 
 
-#def new_ball():
-    #global x, y, r, ball
-    #canv.delete(ball)
-    #r = randint(15, 100)
-    #x = randint(15, 745)
-    #y = randint(15, 545)
-    #ball = canv.create_oval(x-r, y-r, x+r, y+r, fill=random.choice(COLORS), outline=random.choice(COLORS))
-    #root.after(1100, new_ball)
-
-
-x, y = 100, 100
-dx, dy = 2, 3
-r = randint(15, 60)
-ball = canv.create_oval(x-r, y-r, x+r, y+r, fill=random.choice(COLORS), outline=random.choice(COLORS))
-canv.pack(fill=BOTH, expand=1)
+balls = []
+x = randint(30, 470)
+y = randint(30, 470)
+r = randint(30, 60)
+dx = 2
+dy = 3
+oval = canv.create_oval(x-r, y-r, x+r, y+r, fill=random.choice(COLORS), outline=random.choice(COLORS))
+ball = [x, y, dx, dy, oval]
+balls.append(ball)
 
 
 def tick_handler():
-    global x, y, dx, dy
-    print("Тик!")
+    for ball in balls:
+        x, y, dx, dy, oval = ball
     if x < 0:
         dx = -dx
         x = 0
@@ -97,7 +91,11 @@ def tick_handler():
         dy = -dy
         y = 300-40
     x = x + dx; y = y + dy
-    canv.move(ball, dx, dy)
+    canv.move(oval, dx, dy)
+    ball[0] = x
+    ball[1] = y
+    ball[2] = dx
+    ball[3] = dy
 
 
 def time_handler():
@@ -114,7 +112,7 @@ def time_handler():
 
 def unfreezer(event):
     global freeze
-    if freeze == True:
+    if freeze is True:
         speed = speed_scale.get()
         if speed != 0:
             freeze = False
@@ -124,6 +122,7 @@ def unfreezer(event):
 speed_scale = Scale(
                 root, orient=HORIZONTAL, length=300,
                 from_=0, to=10, tickinterval=1, resolution=1)
+speed_scale.pack()
 
 
 def left_click(event):      # for clicking the balls and earning points
@@ -139,9 +138,7 @@ def right_click(event):       # makes all balls disappear
     canv.delete(ALL)
 
 
-text = canv.create_text(20, 20, text=0, font='Arial 20')
 points = 0
-speed_scale.pack()
 
 speed_scale.set(1)
 freeze = False
