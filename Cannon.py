@@ -1,6 +1,11 @@
+from tkinter import *
 import math
 
 g = 9.8
+root = Tk()
+root.geometry('500x500')
+canv = Canvas(root, bg='white')
+canv.pack(fill=BOTH, expand=1)
 
 
 class Cannon:
@@ -57,4 +62,3 @@ class Target:
         self.Vy += ay * dt
 
     def collide(self, other):
-        pass
