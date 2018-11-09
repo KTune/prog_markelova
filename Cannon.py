@@ -1,11 +1,18 @@
 from tkinter import *
+from random import randrange as rnd, choice
 import math
+import time
 
 g = 9.8
 root = Tk()
-root.geometry('500x500')
+fr = Frame(root)
+root.geometry('800x600')
 canv = Canvas(root, bg='white')
 canv.pack(fill=BOTH, expand=1)
+
+def draw_cannon():
+    canv.create_line(70, 550, 160, 480, width=30, fill="black")
+    canv.create_oval(0, 600, 100, 500,outline="black", fill="black")
 
 
 class Cannon:
@@ -27,12 +34,18 @@ class Cannon:
 
 
 class Shell:
-    standard_radius = 5
+    global standard_radius
+    standard_radius = 30
 
     def __init__(self, x, y, Vx, Vy):
         self.x, self.y = x, y
         self.Vx, self.Vy = Vx, Vy
-        self.r = standart_radius
+        self.r = standard_radius
+        x1 = x - standard_radius
+        y1 = y - standard_radius
+        x2 = x + standard_radius
+        y2 = y + standard_radius
+        canv.create_oval(x1, y1, x2, y2, fill='orange', outline="pink")
 
     def go(self, dt):
         ax, ay = 0, g
@@ -62,3 +75,11 @@ class Target:
         self.Vy += ay * dt
 
     def collide(self, other):
+        pass  # TODO
+
+
+
+shell2 = Shell(80, 98, 86, 86)
+
+draw_cannon()
+root.mainloop()
