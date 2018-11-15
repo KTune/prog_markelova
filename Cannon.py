@@ -1,168 +1,7 @@
+from random import randrange as rnd, choice
 import math
 from tkinter import *
-
-
-g = 9.8
-
-
-class Cannon:
-    max_velocity = 1000
-
-    def __init__(self, x, y, canvas):
-        self.canvas = canvas
-        self.x = x
-        self.y = y
-        self.shell_num = None
-        self.direction = math.pi / 4
-
-        self.line_length = 100
-        self.line = canv.create_line(x + 70, y - 50, 160, 480, width=30, fill="black")
-        self.oval = canv.create_oval(x, y, 200, 400, outline="black", fill="black")
-
-    def aim(self, x, y):
-        """
-        Меняет направление direction так, чтобы он из точки
-         (self.x, self.y) указывал в точку (x, y).
-        :param x: координата x, в которую целимся
-        :param y: координата y, в которую целимся
-        :return: None
-        """
-
-        self.direction = math.atan((self.y - y)/(self.x - x))
-
-        self.draw()
-
-    def fire(self, dt):
-        """
-        Создаёт объект снаряда (если ещё не потрачены все снаряды)
-        летящий в направлении угла direction
-        со скоростью, зависящей от длительности клика мышки
-        :param dt:  длительность клика мышки, мс
-        :return: экземпляр снаряда типа Shell
-        """
-
-        shell = Shell(self.x + 70 + self.line_length*math.cos(self.direction),
-                      self.y + - 50 + self.line_length*math.sin(self.direction),
-                      self.max_velocity/2, self.max_velocity/2, self.canvas)
-
-        shells.append(shell)
-
-    def draw(self):
-
-        self.canvas.delete(self.line)
-
-        self.line = self.canvas.create_line(
-            self.x + 70,
-            self.y - 50,
-            self.x + 70 + self.line_length*math.cos(self.direction),
-            self.y - 50 + self.line_length*math.sin(self.direction), width=30, fill="black"
-        )
-
-
-class Shell:
-    global standard_radius
-    standard_radius = 30
-
-    def __init__(self, x, y, Vx, Vy, canvas):
-        self.x, self.y = x, y
-        self.Vx, self.Vy = Vx, Vy
-        self.r = standard_radius
-        x1 = x - standard_radius
-        y1 = y - standard_radius
-        x2 = x + standard_radius
-        y2 = y + standard_radius
-        self.delta_x = 0
-        self.delta_y = 0
-
-        self.canvas = canvas
-
-        self.oval = self.canvas.create_oval(x1, y1, x2, y2, fill='red', outline="pink")
-
-    def go(self, dt):
-        """
-        Сдвигает снаряд исходя из его кинематических характеристик
-        и длины кванта времени dt
-        в новое положение, а также меняет его скорость.
-        :param dt:
-        :return:
-        """
-
-        ax, ay = 0, g
-        self.delta_x = self.Vx * dt + ax * (dt ** 2) / 2
-        self.delta_y = self.Vy * dt + ay * (dt ** 2) / 2
-        self.x += self.delta_x
-        self.y += self.delta_y
-        self.Vx += ax * dt
-        self.Vy += ay * dt
-
-        print('x = {}, y = {}'.format(self.x, self.y))
-        self.draw()
-
-        # TODO: Уничтожать (в статус deleted) снаряд, когда он касается земли.
-
-    def draw(self):
-        self.canvas.move(self.oval, self.delta_x, self.delta_y)
-
-    def detect_collision(self, other):
-        """
-        Проверяет факт соприкосновения снаряда и объекта other
-        :param other: объект, который должен иметь поля x, y, r
-        :return: логическое значение типа bool
-        """
-
-        length = ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5
-        return length <= self.r + other.r
-
-
-class Target:
-    standard_radius = 5
-
-    def __init__(self, x, y, Vx, Vy):
-        self.x, self.y = x, y
-        self.Vx, self.Vy = Vx, Vy
-        self.r = standard_raduis
-
-    def go(self, dt):
-        """
-        Сдвигает шарик-мишень исходя из его кинематических характеристик
-        и длины кванта времени dt
-        в новое положение, а также меняет его скорость.
-        :param dt:
-        :return:
-        """
-
-        ax, ay = 0, g
-        self.x += self.Vx * dt
-        self.y += self.Vy * dt
-        self.Vx += ax * dt
-        self.Vy += ay * dt
-
-        # TODO: Шарики-мишени должны отражаться от стенок
-
-    def collide(self, other):
-        """
-        Расчёт абсолютно упругого соударения
-        :param other:
-        :return:
-        """
-
-        pass  # TODO
-
-
-def mouse_move_handler(event):
-    cannon.aim(event.x, event.y)
-
-
-def mouse_left_click_handler(event):
-    cannon.fire(100)
-
-
-def tick():
-    for shell in shells:
-        shell.go(0.1)
-
-    root.after(10, tick)
-
+import time
 
 root = Tk()
 fr = Frame(root)
@@ -170,12 +9,155 @@ root.geometry('800x600')
 canv = Canvas(root, bg='white')
 canv.pack(fill=BOTH, expand=1)
 
-canv.bind('<Motion>', mouse_move_handler)
-canv.bind('<Button-1>', mouse_left_click_handler)
 
-shells = []
+class Cannon:
 
-cannon = Cannon(70, 550, canv)
+    def __init__(self):
+        self.f_power = 10
+        self.f_on = 0
+        self.direction = math.pi / 4
+        self.x = x_start
+        self.y = y_start
+        self.line_length = 100
+        self.id = canv.create_line(self.x, self.y, self.x + self.line_length, self.y, width=30, fill="black")
 
-tick()
-root.mainloop()
+    def fire_start(self, event):
+        self.f_on = 1
+
+    def fire_end(self, event):
+        global balls, bullet
+        bullet += 1
+        new_ball = Shell()
+        new_ball.r += 5
+        self.direction = math.atan((event.y - new_ball.y) / (event.x - new_ball.x))
+        new_ball.Vx = self.f_power * math.cos(self.direction)
+        new_ball.Vy = -self.f_power * math.sin(self.direction)
+        balls += [new_ball]
+        self.f_on = 0
+        self.f_power = 10
+
+    def aiming(self, event=0):
+        if event:
+            self.direction = math.atan((event.y - self.y) / (event.x - self.x))
+        if self.f_on:
+            canv.itemconfig(self.id, fill='red')
+        else:
+            canv.itemconfig(self.id, fill='blue')
+        canv.coords(self.id, x_start, y_start, x_start + max(self.f_power, 20) * math.cos(self.direction),
+                    y_start + max(self.f_power, 20) * math.sin(self.direction))
+
+    def fire_power(self):
+        if self.f_on:
+            if self.f_power < 100:
+                self.f_power += 1
+            canv.itemconfig(self.id, fill='red')
+        else:
+            canv.itemconfig(self.id, fill='blue')
+
+x_start = 20
+y_start = 450
+standard_radius = 15
+
+
+class Shell:
+    def __init__(self, x=x_start, y=y_start):
+        self.x, self.y = x, y
+        self.Vx, self.Vy = 0, 0
+        self.r = standard_radius
+        self.color = choice(['blue', 'green', 'red'])
+        self.id = canv.create_oval(self.x - self.r, self.y - self.r, self.x + self.r, self.y + self.r, fill=self.color)
+        self.live = 360
+
+    def move(self):
+        if self.y <= 500:
+            self.Vy -= 1.2
+            self.y -= self.Vy
+            self.x += self.Vx
+            self.Vx *= 0.99
+            self.draw()
+        else:
+            if self.Vx ** 2 + self.Vy ** 2 > 10:
+                self.Vy = -self.Vy / 2
+                self.Vx = self.Vx / 2
+                self.y = 499
+            if self.live < 0:
+                balls.pop(balls.index(self))
+                canv.delete(self.id)
+            else:
+                self.live -= 1
+        if self.x > 780:
+            self.Vx = - self.Vx / 2
+            self.x = 779
+
+    def draw(self):
+        canv.coords(self.id, self.x - self.r, self.y - self.r, self.x + self.r, self.y + self.r)
+
+    def detect_collision(self, ob):
+        if abs(ob.x - self.x) <= (self.r + ob.r) and abs(ob.y - self.y) <= (self.r + ob.r):
+            return True
+        else:
+            return False
+
+
+class Target:
+    def new_target(self):
+        x = self.x = rnd(450, 780)
+        y = self.y = rnd(200, 520)
+        r = self.r = rnd(8, 50)
+        color = self.color = 'magenta'
+        canv.coords(self.id, x - r, y - r, x + r, y + r)
+        canv.itemconfig(self.id, fill=color)
+
+    def __init__(self):
+        self.points = 0
+        self.id = canv.create_oval(0, 0, 0, 0)
+        self.id_points = canv.create_text(30, 30, text=self.points, font='20')
+        self.new_target()
+        self.live = 1
+        self.x, self.y = 0, 0
+        self.color = 'red'
+        self.r = 15
+
+    def collide(self, points=1):
+        canv.coords(self.id, -10, -10, -10, -10)
+        self.points += points
+        canv.itemconfig(self.id_points, text=self.points)
+
+
+target = Target()
+screen1 = canv.create_text(400, 300, text='', font='28')
+cannon = Cannon()
+bullet = 0
+balls = []
+
+def new_game(event=''):
+    global gun, target, screen1, balls, bullet
+    target.new_target()
+    bullet = 0
+    balls = []
+    canv.bind('<Button-1>', cannon.fire_start)
+    canv.bind('<ButtonRelease-1>', cannon.fire_end)
+    canv.bind('<Motion>', cannon.aiming)
+
+    target.live = 1
+    while target.live or balls:
+        for ball in balls:
+            ball.move()
+            if ball.detect_collision(target) and target.live:
+                target.live = 0
+                target.collide()
+                canv.bind('<Button-1>', '')
+                canv.bind('<ButtonRelease-1>', '')
+                canv.itemconfig(screen1, text='Цель уничтожена за ' + str(bullet) + ' выстрелов')
+        canv.update()
+        time.sleep(0.03)
+        cannon.aiming()
+        cannon.fire_power()
+    canv.itemconfig(screen1, text='')
+    canv.delete(gun)
+    root.after(750, new_game)
+
+
+new_game()
+
+mainloop()
