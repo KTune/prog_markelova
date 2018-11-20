@@ -60,8 +60,8 @@ class GreenDragon(Dragon):
         self._color = 'зелёный'
 
     def question(self):
-        x = randint(1, 100)
-        y = randint(1, 100)
+        x = randint(1, 50)
+        y = randint(1, 50)
         self.__quest = str(x) + '+' + str(y)
         self.set_answer(x + y)
         return self.__quest
@@ -74,8 +74,8 @@ class RedDragon(Dragon):
         self._color = 'красный'
 
     def question(self):
-        x = randint(1, 100)
-        y = randint(1, 100)
+        x = randint(1, 50)
+        y = randint(1, 50)
         self.__quest = str(x) + '-' + str(y)
         self.set_answer(x - y)
         return self.__quest
@@ -88,8 +88,8 @@ class BlackDragon(Dragon):
         self._color = 'чёрный'
 
     def question(self):
-        x = randint(1, 100)
-        y = randint(1, 100)
+        x = randint(1, 10)
+        y = randint(1, 10)
         self.__quest = str(x) + '*' + str(y)
         self.set_answer(x * y)
         return self.__quest
@@ -117,16 +117,16 @@ def game_tournament(hero, dragon_list):
 
     if hero.is_alive():
         print('Поздравляем! Вы победили!')
-        print('Ваш накопленный опыт:', hero._experience)
+        print('Ваш накопленный опыт:', hero._exp)
     else:
-        print('К сожалению, Вы проиграли...')
+        print('К сожалению, Вы - труп...')
 
 
 def start_game():
 
     try:
         print('Добро пожаловать в арифметико-ролевую игру с драконами!')
-        print('Представьтесь, пожалуйста: ', end = '')
+        print('Представьтесь, пожалуйста: ', end='')
         hero = Hero(input())
 
         dragon_number = 3
@@ -137,7 +137,6 @@ def start_game():
 
     except EOFError:
         print('Поток ввода закончился. Извините, принимать ответы более невозможно.')
-
 
 
 print(__name__)
