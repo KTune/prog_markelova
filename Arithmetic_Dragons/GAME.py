@@ -1,5 +1,6 @@
 from random import randint, choice
 
+
 class Attacker:
     _health = None
     _attack = None
@@ -11,9 +12,9 @@ class Attacker:
         return self._health > 0
 
 
-def annoying_input_int(message =''):
+def annoying_input_int(message=''):
     answer = None
-    while answer == None:
+    while answer is None:
         try:
             answer = int(input(message))
         except ValueError:
@@ -27,7 +28,6 @@ class Hero(Attacker):
         self._attack = 50
         self._exp = 0
         self._name = name
-
 
 
 class Enemy(Attacker):

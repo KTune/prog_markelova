@@ -1,11 +1,13 @@
 from gameunit import *
 
 class Hero(Attaker):
-    def __init__(self):
+    def __init__(self, name):
         self._health = 100
         self._attack = 50
         self._exp = 0
         self._name = name
+
+    def attack(self, target):
 
 
 
