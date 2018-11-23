@@ -1,5 +1,4 @@
 import graphics as gr
-import time
 window = gr. GraphWin("interest", 500, 500)
 window.setBackground("#B3FFE5")
 
@@ -46,11 +45,15 @@ def main():
         answerbox.draw(window)
 
     def draw_house():
-        walls = gr.Rectangle(gr.Point(350, 350), gr.Point(420, 420))
+        x = 350
+        y = 420
+        walls = gr.Rectangle(gr.Point(x, x), gr.Point(y, y))
         walls.setFill("#CC2200")
         walls.setOutline("#CC2200")
-       # roof = gr.Polygon((350,350), ())
-       # roof.draw(window)
+        roof = gr.Polygon(gr.Point(x, x), gr.Point(x+35, y-120), gr.Point(x+70, x))
+        roof.setFill("#FF7E00")
+        roof.setOutline("#FF7E00")
+        roof.draw(window)
         walls.draw(window)
 
     for x, y in [(240,100), (300,180), (380,100)]:
