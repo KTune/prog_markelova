@@ -21,7 +21,7 @@ class Cannon:
         self.line_length = 100
         self.id = canv.create_line(self.x, self.y, self.x + self.line_length, self.y, width=30, fill="black")
 
-    def fire_start(self):
+    def fire_start(self, event):
         self.f_on = 1
 
     def fire_end(self, event):
