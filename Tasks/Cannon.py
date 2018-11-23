@@ -21,7 +21,7 @@ class Cannon:
         self.line_length = 100
         self.id = canv.create_line(self.x, self.y, self.x + self.line_length, self.y, width=30, fill="black")
 
-    def fire_start(self, event):
+    def fire_start(self):
         self.f_on = 1
 
     def fire_end(self, event):
@@ -53,6 +53,7 @@ class Cannon:
             canv.itemconfig(self.id, fill='red')
         else:
             canv.itemconfig(self.id, fill='blue')
+
 
 x_start = 20
 y_start = 450
@@ -130,8 +131,9 @@ cannon = Cannon()
 bullet = 0
 balls = []
 
-def new_game(event=''):
-    global gun, target, screen1, balls, bullet
+
+def new_game():
+    global target, screen1, balls, bullet
     target.new_target()
     bullet = 0
     balls = []
@@ -154,7 +156,6 @@ def new_game(event=''):
         cannon.aiming()
         cannon.fire_power()
     canv.itemconfig(screen1, text='')
-    canv.delete(gun)
     root.after(750, new_game)
 
 
