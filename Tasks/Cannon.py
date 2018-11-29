@@ -125,12 +125,6 @@ class Target:
         canv.itemconfig(self.id_points, text=self.points)
 
 
-target = Target()
-screen1 = canv.create_text(400, 300, text='', font='28')
-cannon = Cannon()
-bullet = 0
-balls = []
-
 
 def new_game():
     global target, screen1, balls, bullet
@@ -159,6 +153,17 @@ def new_game():
     root.after(750, new_game)
 
 
-new_game()
+
+target = Target()
+
+screen1 = canv.create_text(400, 300, text='', font='28')
+cannon = Cannon()
+bullet = 0
+balls = []
+
+
+
+
+new_game(targeet)
 
 mainloop()
