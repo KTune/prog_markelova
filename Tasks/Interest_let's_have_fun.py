@@ -22,7 +22,7 @@ def main():
         sun.draw(window)
 
     def draw_txt():
-        txt = gr. Text(gr. Point(250, 250), "Whatcha doing?")
+        txt = gr. Text(gr. Point(250, 250), "What are you doing?")
         txt.setSize(20)
         txt.setTextColor("#550066")
         txt.draw(window)
@@ -56,9 +56,8 @@ def main():
         roof.draw(window)
         walls.draw(window)
 
-    for x, y in [(240,100), (300,180), (380,100)]:
-        draw_cloud(x,y)
-
+    for x, y in [(240, 100), (300, 180), (380, 100)]:
+        draw_cloud(x, y)
 
     draw_hill()
     draw_grass()
