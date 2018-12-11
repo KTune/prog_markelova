@@ -21,6 +21,16 @@ class Cannon:
         self.line_length = 100
         self.id = canv.create_line(self.x, self.y, self.x + self.line_length, self.y, width=30, fill="black")
 
+    def aiming(self, event=0):
+        if event:
+            self.direction = math.atan((event.y - self.y) / (event.x - self.x))
+        if self.f_on:
+            canv.itemconfig(self.id, fill='red')
+        else:
+            canv.itemconfig(self.id, fill='blue')
+        canv.coords(self.id, x_start, y_start, x_start + max(self.f_power, 20) * math.cos(self.direction),
+                    y_start + max(self.f_power, 20) * math.sin(self.direction))
+
     def fire_start(self, event):
         self.f_on = 1
 
@@ -35,16 +45,6 @@ class Cannon:
         balls += [new_ball]
         self.f_on = 0
         self.f_power = 10
-
-    def aiming(self, event=0):
-        if event:
-            self.direction = math.atan((event.y - self.y) / (event.x - self.x))
-        if self.f_on:
-            canv.itemconfig(self.id, fill='red')
-        else:
-            canv.itemconfig(self.id, fill='blue')
-        canv.coords(self.id, x_start, y_start, x_start + max(self.f_power, 20) * math.cos(self.direction),
-                    y_start + max(self.f_power, 20) * math.sin(self.direction))
 
     def fire_power(self):
         if self.f_on:
@@ -125,7 +125,6 @@ class Target:
         canv.itemconfig(self.id_points, text=self.points)
 
 
-
 def new_game():
     global target, screen1, balls, bullet
     target.new_target()
@@ -153,7 +152,6 @@ def new_game():
     root.after(750, new_game)
 
 
-
 target = Target()
 
 screen1 = canv.create_text(400, 300, text='', font='28')
@@ -161,9 +159,6 @@ cannon = Cannon()
 bullet = 0
 balls = []
 
-
-
-
-new_game(targeet)
+new_game()
 
 mainloop()
