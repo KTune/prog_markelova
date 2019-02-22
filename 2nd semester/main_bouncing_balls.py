@@ -17,27 +17,14 @@ class Ball:
     """
 
     def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.change_x = 0
-        self.change_y = 0
+        # Starting position of the ball.
+        # Take into account the ball size so we don't spawn on the edge.
+        self.x = random.randrange(BALL_SIZE, SCREEN_WIDTH - BALL_SIZE)
+        self.y = random.randrange(BALL_SIZE, SCREEN_HEIGHT - BALL_SIZE)
 
-
-def create_ball():
-    """
-    Function to make a new, random ball.
-    """
-    ball = Ball()
-    # Starting position of the ball.
-    # Take into account the ball size so we don't spawn on the edge.
-    ball.x = random.randrange(BALL_SIZE, SCREEN_WIDTH - BALL_SIZE)
-    ball.y = random.randrange(BALL_SIZE, SCREEN_HEIGHT - BALL_SIZE)
-
-    # Speed and direction of rectangle
-    ball.change_x = random.randrange(-3, 3)
-    ball.change_y = random.randrange(-3, 3)
-
-    return ball
+        # Speed and direction of rectangle
+        self.change_x = random.randrange(-3, 0, 1) or random.randrange(1, 4, 1)
+        self.change_y = random.randrange(-3, 0, 1) or random.randrange(1, 4, 1)
 
 
 def main():
@@ -49,6 +36,7 @@ def main():
     # Set the height and width of the screen
     size = [SCREEN_WIDTH, SCREEN_HEIGHT]
     screen = pygame.display.set_mode(size)
+    BG = pygame.image.load("space_pic_best.png").convert()
 
     # Loop until the user clicks the close button.
     done = False
@@ -58,7 +46,7 @@ def main():
 
     ball_list = []
 
-    ball = create_ball()
+    ball = Ball()
     ball_list.append(ball)
 
     # -------- Main Program Loop -----------
@@ -70,7 +58,7 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 # Space bar! Spawn a new ball.
                 if event.key == pygame.K_SPACE:
-                    ball = create_ball()
+                    ball = Ball()
                     ball_list.append(ball)
 
         # --- Logic
@@ -87,17 +75,18 @@ def main():
 
         # --- Drawing
         # Set the screen background
-        screen.fill(BLACK)
+        screen.blit(BG, [0, 0])
 
         # Draw the balls
+        ball_pic = pygame.image.load("planet.png").convert()
         for ball in ball_list:
-            pygame.draw.circle(screen, WHITE, [ball.x, ball.y], BALL_SIZE)
+            pygame.draw.circle(screen, BLACK, [ball.x, ball.y], BALL_SIZE)
 
         # --- Wrap-up
-        # Limit to 60 frames per second
+        # Limit to 120 frames per second
         clock.tick(120)
 
-        # Go ahead and update the screen with what we've drawn.
+        # Update the screen with what we've drawn.
         pygame.display.flip()
 
     # Close everything down
